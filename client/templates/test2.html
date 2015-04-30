@@ -1,0 +1,50 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-2 sideDiv">
+				<h3 class="roomTitle">Rooms</h3>
+					<p class="roomList" data-ng-repeat="room in rooms" ng-click="selectRoom(room)">{{ room }}</p>
+				
+
+			<div id="forms" class="forms">
+				<div id="roomForm" ng-include='roomTemp'></div>
+				<button id="newButton" class="btn btn-default" ng-click="newRoom()" ng-show="showNewRoomButton">
+				<span class="glyphicon glyphicon-plus "></span>New Room</button>
+			</div>
+
+		</div>
+		<div class="col-xs-10 mainDiv">
+			<div class="row">
+				<div class="col-xs-12" style="padding-right:0%;">
+					<div class="roomHeader">
+						<h1>{{ currentRoom }}</h1>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12" style="padding-right:0%;">
+					<div class="chatArea">
+						<div class="message" data-ng-repeat="mesg in messages" >
+								<p class="user" style="position:relative;">{{ mesg.user }}</p>
+								<span class="messageText">{{ mesg.message }}</span>
+								<p class="date">{{ mesg.date }} </p>
+						</div>
+					</div>
+					<div class="submitArea">
+						<form class="form-inline">
+							<div class="form-group">
+								<label for="User" class="col-xs-2 cotrol-label">Name</label>
+								<div class="col-xs-4">
+									<input type="text" class="form-control" data-ng-model="newMessage.user" id="user">
+								</div>
+								<label for="message" class="col-xs-2 cotrol-label">Message</label>
+								<div class="col-xs-4">
+									<input type="text" class="form-control" id="message" data-ng-model="newMessage.message" ng-enter="addMessage()">
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

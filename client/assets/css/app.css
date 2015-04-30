@@ -1,0 +1,98 @@
+.room {
+	width: 100%;
+
+}
+.roomList:hover{
+	background-color: rgba(173,216,230, 0.5);
+	width: 100%;
+
+}
+.roomList {
+	width: 100%;
+	margin: auto;
+	text-align: center;
+}
+.roomTitle {
+	text-align: center;
+}
+.date {
+	float: right;
+	min-width: 20%;
+	padding-left: 10%;
+}
+.message {
+	padding-top: .3%;
+	padding-bottom: .3%;
+	width: 100%;
+	display: inline-flex;
+	vertical-align: text-top;
+}
+
+.message:nth-child(even) {
+	background-color: rgba(173,216,230, 0.5);
+}
+
+.messageText {
+	max-width: 40%;
+	min-width: 40%;
+	padding-right:10%;
+	padding-left:5%;
+	overflow: scroll;
+}
+
+.people {
+	width: 100%;
+}
+
+.sideDiv {
+	background-color: #f1f1f1;
+  	border: 1px solid #666;
+  	border-color: #e5e5e5;
+  	height: 100vh;
+  	overflow: scroll;
+  	padding-left: 0%;
+  	padding-right: 0%;
+}
+.roomHeader {
+	background-color: #f1f1f1;
+  	border: 1px solid #666;
+  	border-color: #e5e5e5;
+  	text-align: center;
+}
+.mainDiv{
+	padding :0%;
+}
+
+.innerSideDiv {
+	background-color: #f1f1f1;
+  	border: 1px solid #666;
+  	border-color: #e5e5e5;
+  	height: 100vh;
+}
+.chatArea {
+	height: 79vh;
+	overflow: scroll;
+}
+.submitArea {
+	height: 6vh;
+	background-color: #f1f1f1;
+  	border: 1px solid #666;
+  	border-color: #e5e5e5;
+  	overflow: scroll;
+  	text-align: center;
+
+}
+.forms {
+	width: 100%;
+	padding-top: 10%;
+	text-align: center;
+}
+
+.user {
+	padding-right: 20%;
+	max-width: 5%;
+}
+
+body {
+	padding-top: 50px;
+}
