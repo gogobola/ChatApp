@@ -1,21 +1,21 @@
-var application = angular.module('application', ['ngRoute', 'firebase']);
+var application = angular.module('application',['ngRoute', 'ngAnimate', "firebase"]);
 
-application.config(function ($routeProvider, $locationProvider, $compileProvider) {
-	$routeProvider
-		.when("/test2", {
-		controller: "testController",
-		templateUrl: 'templates/test2.html'
-	}).otherwise({
-		redirectTo: "/test2"
+application.config(function($routeProvider, $locationProvider, $compileProvider){
+  $routeProvider
+  .when("/main", {
+  	controller: "testController",
+    templateUrl: 'templates/main.html'
+  }).otherwise({
+      redirectTo : "/main"
     });
-	$locationProvider.html5Mode(true);
+  $locationProvider.html5Mode(true);
 });
 
 application.directive('ngEnter', function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
-            if (event.which === 13) {
-                scope.$apply(function () {
+            if(event.which === 13) {
+                scope.$apply(function (){
                     scope.$eval(attrs.ngEnter);
                 });
                 event.preventDefault();
@@ -24,216 +24,220 @@ application.directive('ngEnter', function () {
     };
 });
 
-application.factory('chatFactory', ['$firebaseObject', function ($firebaseObject) {
-	var messages = [
-
-		{
-			user: "Billy",
-			message: "Message1bjbhbjhbjhbjhbjhbjhbjhbjhbjhbj",
-			date: "January"
-		},
-		{
-			user: "Rico",
-			message: "Message2",
-			date: "Feburary"
-		},
-		{
-			user: "Suave",
-			message: "Message3",
-			date: "March"
-		},
-
-		{
-			user: "jumanji",
-			message: "MessageA",
-			date: "January"
-		},
-		{
-			user: "lipo",
-			message: "MessageB",
-			date: "Feburary"
-		},
-		{
-			user: "yuyu",
-			message: "MessageC",
-			date: "March"
-		}
-	];
-	var rooms = {
-		"room1":
-		[
-			{
-				user: "Billy",
-				message: "Message1bjbhbjhbjhbjhbjhbjhbjhbjhbjhbj",
-				date: "January"
-			},
-			{
-				user: "Rico",
-				message: "Message2",
-				date: "Feburary"
-			},
-			{
-				user: "Suave",
-				message: "Message3",
-				date: "March"
-			},
-
-			{
-				user: "jumanji",
-				message: "MessageA",
-				date: "January"
-			},
-			{
-				user: "lipo",
-				message: "MessageB",
-				date: "Feburary"
-			},
-			{
-				user: "yuyu",
-				message: "MessageC",
-				date: "March"
-			}
-		]
-		,
-		"room2":
-		[
-			{
-				user: "BOO",
-				message: "Message1bjbhbjhbjhbjhbjhbjhbjhbjhbjhbj",
-				date: "January"
-			},
-			{
-				user: "SOO",
-				message: "Message2",
-				date: "Feburary"
-			},
-			{
-				user: "LUUU",
-				message: "Message3",
-				date: "March"
-			},
-
-			{
-				user: "NNNN",
-				message: "MessageA",
-				date: "January"
-			},
-			{
-				user: "AAA",
-				message: "MessageB",
-				date: "Feburary"
-			},
-			{
-				user: "ZZZ",
-				message: "MessageC",
-				date: "March"
-			}
-		]
-
-	};
-
-	//var roomsref = new Firebase("https://glaring-inferno-7726.firebaseio.com/");
+application.factory('chatFactory', ["$firebaseArray","$firebaseObject", function($firebaseArray,$firebaseObject) {
+var factory = {};
 
 
-	var factory = {};
+factory.addNewroom = function(value) {
+	var ref = new Firebase("https://glaring-inferno-7726.firebaseio.com/rooms");
+	ref.push(value);
+}
 
-	factory.getMessages = function () {
-		return rooms
-	}
-	factory.getRooms = function () {
-		return Object.keys(rooms);
-	}
+factory.getRooms = function () {
+	var ref = new Firebase("https://glaring-inferno-7726.firebaseio.com/rooms");
+	ref.push();
+	return $firebaseObject(ref);
+}
 
-	factory.getrefMessages = function () {
-		var roomsref = new Firebase("https://glaring-inferno-7726.firebaseio.com/");
-		var syncObject = $firebaseObject(roomsref);
-		syncObject.$loaded().then(function () {
-			return syncObject;
-		});
+factory.getRoomMessages = function(value) {
+	var ref = new Firebase("https://glaring-inferno-7726.firebaseio.com/"+value);
+	ref.push();
+	return $firebaseObject(ref);
+}
 
-	}
+factory.addMessages = function(room,message) {
+	var ref = new Firebase("https://glaring-inferno-7726.firebaseio.com/"+room);
+	ref.push(message);
+	return $firebaseObject(ref);
+}
 
-	return factory;
+factory.registerAccount = function(user, password){
+	var ref = new Firebase("https://glaring-inferno-7726.firebaseio.com/");
+	console.log(password);
+	ref.createUser({
+	  "email": user+"@firebase.com",
+	  "password": password
+	}, function(error, userData) {
+	  if (error) {
+	    switch (error.code) {
+	      case "EMAIL_TAKEN":
+	        $("#creationFailed").html("The new user account cannot be created because the username is already in use.");
+	    	$("#creationFailed").slideDown(900).delay(2500).slideUp(900);
+	        break;
+	      case "INVALID_EMAIL":
+	        $("#creationFailed").html("The specified email is not a valid email.");
+	    	$("#creationFailed").slideDown(900).delay(2500).slideUp(900);
+	        break;
+	      default:
+	        $("#createFailed").html("Error creating user: " + error);
+	        $("#creationFailed").slideDown(900).delay(2500).slideUp(900);
+	    }
+	  } else {
+	    console.log("Successfully created user account with uid:", userData.uid);
+	    $("#creationSuccess").slideDown(900).delay(2500).slideUp(900);
+	  }
+	});
+}
+
+factory.login = function(user, password){
+	var success = false;
+	var ref = new Firebase("https://glaring-inferno-7726.firebaseio.com/");
+	ref.authWithPassword({
+	  "email": user+"@firebase.com",
+	  "password": password
+	}, function(error, authData) {
+	  if (error) {
+	    console.log("Login Failed!", error);
+	    $("#loginFailed").html("Login " + error);
+	    $("#loginFailed").slideDown(900).delay(2500).slideUp(900);
+	  } else {
+	    console.log("Authenticated successfully with payload:", authData);
+	     $("#loginSuccess").slideDown(900).delay(1000).slideUp(900);
+	  }
+	});
+}
+
+return factory;
+
+
 }
 ]);
 
-application.controller("testController", function ($scope, $firebaseObject, $firebaseArray, chatFactory) {
-	$scope.messages = [];
-	$scope.rooms = [];
-	$scope.roomTemp = "";
-	$scope.showNewRoomButton = true;
-	$scope.roomMessgs = [];
-	//$scope.data2; 
-	chatFactory.getrefMessages().$bindto($scope, data2);
-	// var roomsref = new Firebase("https://glaring-inferno-7726.firebaseio.com/");
-	// var syncObject = $firebaseObject(roomsref);
+application.controller("testController",["$scope", "chatFactory", function($scope, chatFactory){
+  $scope.messages = [];
+  $scope.rooms = [];
+  $scope.roomTemplate = "";
+  $scope.showNewRoomButton = true;
+  $scope.roomMessgs = [];
+  $scope.currentRoom = "";
+  $scope.showCreateAccount = "";
+  $scope.showLoginPage = "";
+  $scope.modalTitle = "";
+  $scope.currentUser= "";
+  $scope.Loggedin = "";
+  $scope.showAlert= false;
 
-	var room1 = "room1";
-	console.log(syncObject.room1);
+  var ref = new Firebase("https://glaring-inferno-7726.firebaseio.com/");
 
-	//	syncObject.$loaded().then(function () {
-	//		console.log("I am here");
-	//		//$scope.roomMessgs = syncObject;
-	//		angular.forEach(syncObject, function (value, key) {
-	//			console.log(key, value);
-	//		});
-	//	});
-	init();
-	console.log($scope.data2);
+  // window.setTimeout(function() {
+	 //  $("#alert1").fadeTo(500, 0).slideUp(500, function(){
+	 //      $(this).remove();
+	 //  });
+  // }, 5000);
 
-	function init() {
-		$scope.rooms = Object.keys(syncObject);
+
+  init();
+  console.log($scope.rooms);
+  ref.onAuth(authDataCallback);
+
+  function authDataCallback () {
+	var authData = ref.getAuth();
+	if (authData) {
+	  $scope.currentUser = authData.password.email.replace(/@.*/, '');
+	  $scope.Loggedin = true;
+	} else {
+	  $scope.currentUser= "";
+	  $scope.Loggedin = false;
+	  console.log("User is logged out");
 	}
-	$scope.selectRoom = function (room) {
-		$scope.currentRoom = room;
-		console.log($scope.roomMessgs);
-		$scope.messages = $scope.roomMessgs[room];
+  }
 
 
-	}
-
-	$scope.addMessage = function () {
-		console.log("I am here");
-		console.log($scope.roomMessgs);
-		if ($scope.newMessage.user) {
-			$scope.messages.push({
-				user: $scope.newMessage.user,
-				message: $scope.newMessage.message,
-				date: moment().format('MMMM Do YYYY, h:mm:ss a')
-
-			});
-		}
-		else {
-			$scope.messages.push({
-				user: "Anonymous",
-				message: $scope.newMessage.message,
-				date: moment().format('MMMM Do YYYY, h:mm:ss a')
-
-			});
-		}
-		console.log($scope.roomMessgs);
-	}
-
-	$scope.show = function (messg) {
-		console.log(messg + " show");
-	}
-
-	$scope.newRoom = function () {
-		$scope.roomTemp = "templates/newForm.html";
-		$scope.showNewRoomButton = false;
-
-	}
+  function init() {
+  	var roomsObject = chatFactory.getRooms();
+ 	roomsObject.$bindTo($scope, "rooms");
+ 	
+  
+  }
+  $scope.selectRoom = function (room) {
+  	$scope.currentRoom = room;
+  	$scope.messages = chatFactory.getRoomMessages(room);
+  }
 
 
-	$scope.saveRoom = function () {
-		$scope.rooms.push($scope.newRoom.NewName);
-		$scope.roomMessgs[$scope.newRoom.NewName] = [];
-		$scope.roomTemp = "";
-		$scope.showNewRoomButton = true;
-		console.log($scope.rooms);
+  $scope.loadAcctCreate = function() {
+  	$scope.modalTitle = "Create Account";
+  	$scope.showCreateAccount = true;
+    $scope.showLoginPage = false;
+  }
+
+  $scope.createAccount = function(){
+  	if ($scope.newUser.password != $scope.newUser.confirmPass) {
+  		$("#passwordWarning").slideDown(900).delay(1000).slideUp(900);
+  	}
+  	else {
+  	chatFactory.registerAccount($scope.newUser.userName,$scope.newUser.password);
+  	}
+  }
+
+  $scope.loadLoginPage = function() {
+  	  $scope.modalTitle = "Login";
+	  $scope.showCreateAccount = false;
+	  $scope.showLoginPage = true;
+  }
+
+  $scope.login = function() {
+  	chatFactory.login($scope.user.user,$scope.user.password);
+
+  }
+  $scope.logout = function() {
+  	ref.unauth();
+    $("#logoutSuccess").slideDown(900).delay(1000).slideUp(900);
+  }
+
+  $scope.addMessage = function () {
+  	console.log("I am here");
+  	console.log($scope.roomMessgs);
+  	var message = {};
+  	if($scope.currentUser) {
+  	 	message = {
+	  			user: $scope.currentUser,
+	  			message: $scope.newMessage.message,
+	  			date:  moment().format('MMMM Do YYYY, h:mm:ss a')
+
+	  	}
+	 }
+  	else {
+  		message = {
+	  			user: "Anonymous",
+	  			message: $scope.newMessage.message,
+	  			date:  moment().format('MMMM Do YYYY, h:mm:ss a')
+
+	  	};
+  	}
+  	chatFactory.addMessages($scope.currentRoom,message);
+  	$scope.newMessage.message = "";
+  	if($scope.showAlert == false && (!($scope.currentUser))){
+  		$("#loginMessage").slideDown(900).delay(2500).slideUp(900);
+  	}
+  	$scope.showAlert = true;
+  }
 
 
-	}
+  $scope.newRoom = function(){
+  	$scope.roomTemplate = "templates/newForm.html";
+  	$scope.showNewRoomButton = false;
 
+  }
+
+
+  $scope.saveRoom = function() {
+  	 chatFactory.addNewroom($scope.newRoom.NewName);
+  	 $scope.roomTemplate = "";
+  	 $scope.showNewRoomButton = true;
+
+  }
+
+  $scope.closeRoom = function() {
+  	 $scope.roomTemplate = "";
+  	 $scope.showNewRoomButton = true;
+  }
+
+  $scope.$watch('messages', function(newVal, oldVal) {
+  	console.log("this happened");
 
 });
+ 
+
+}
+]);

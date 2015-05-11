@@ -1,0 +1,143 @@
+   <div class="navbar navbar-inverse navbar-fixed-top" id="menu" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only"><font><font>Toggle navigation</font></font></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="templates/test2" class="navbar-brand"><font><font>ChatApp</font></font></a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+		<li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span></a>
+		         <ul class="dropdown-menu" role="menu">
+					<li>
+						<a id="newButton" ng-click="newRoom()" ng-show="showNewRoomButton">
+							New Room
+						</a>
+					</li>
+					<li>
+						<a ng-click="loadAcctCreate()" data-toggle="modal" data-target="#myModal">
+							Create Account
+						</a>
+					</li>
+					<li>
+		            	<a style="width:100%;" ng-hide="Loggedin" ng-click="loadLoginPage()" data-toggle="modal" data-target="#myModal">
+		            		Login
+						</a>
+					</li>
+					<li>
+		            	<a style="width:100%;" ng-show="Loggedin" ng-click="logout()">
+		            		Logout
+						</a>
+					</li>
+		         </ul>
+	        </li>
+         <li><a><font color="#337ab7" ><font><span class="glyphicon glyphicon-user"></span> {{ currentUser}} </font></font></a></li>
+      </ul>   
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+<div id="loginSuccess" class="alert alert-success" role="alert">Congratulations! Login Successful</div>
+<div id="logoutSuccess" class="alert alert-success" role="alert">Congratulations! Logout Successful</div>
+<div id="creationSuccess" class="alert alert-success" role="alert">Congratulations! Account Creation Successful</div>
+<div id="loginMessage"class="alert alert-info" role="alert">Create a User and Login in Settings.</div>
+<div id="loginFailed" class="alert alert-danger" role="alert"></div>
+<div id="creationFailed" class="alert alert-danger" role="alert"></div>
+<div id="passwordWarning" class="alert alert-warning" role="alert">Passwords did not match, Try Again</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{ modalTitle}}</h4>
+      </div>
+      <div class="modal-body">
+      	<div id="createAccount" ng-show="showCreateAccount">
+	       	<form >
+				<div class="form-group">
+				    <label for="name">Username</label>
+				    <input id="name" type="text" class="form-control" data-ng-model="newUser.userName" placeholder="Name">
+				</div>
+				<hr/>
+				<div class="form-group">
+				    <label for="password">Password</label>
+				    <input id="password" type="password" class="form-control" data-ng-model="newUser.password" placeholder="Password">
+				</div>
+				<hr/>
+				<div class="form-group">
+				    <label for="confirmPass">Confirm Password</label>
+				    <input id="confimPass"type="password" class="form-control" data-ng-model="newUser.confirmPass" placeholder="Confirm Password">
+				</div>
+			</form>
+		</div>
+		<div id="login" ng-show="showLoginPage">
+	       	<form >
+				<div class="form-group">
+				    <label for="user">User</label>
+				    <input id="user"type="text" class="form-control" data-ng-model="user.user" placeholder="Email Address">
+				</div>
+				<hr/>
+				<div class="form-group">
+				    <label for="userPass">Password</label>
+				    <input id="password" type="password" class="form-control" data-ng-model="user.password" placeholder="Password">
+				</div>
+				<hr/>
+			</form>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-click="createAccount()" ng-show="showCreateAccount" data-dismiss="modal" class="btn btn-primary">Create Account</button>
+        <button type="button" ng-click="login()" ng-show="showLoginPage" class="btn btn-primary" data-dismiss="modal" >Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+	<div class="row" style="max-height: 100vh;">
+		<div class="col-xs-2 sideDiv">
+			<div id="forms" class="forms">
+				<div id="roomForm" class="roomForm" ng-include='roomTemplate'></div>
+			</div>
+				<h3 class="roomTitle">Rooms</h3>
+					<p class="roomList"  ng-repeat="room in rooms" ng-click="selectRoom(room)">{{ room }}</p>
+			<div class="forms">
+
+			</div>
+		</div>
+		<div class="col-xs-10 mainDiv">
+			<div class="row">
+				<div class="col-xs-12" style="padding-right:0%;">
+					<div class="roomHeader">
+						<h1>{{ currentRoom }}</h1>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div id="outerDiv" class="col-xs-12" style="padding-right:0%;">
+					<div  id="chatArea" class="chatArea">
+							<div class="message" data-ng-repeat="mesg in messages" >
+									<p class="user" style="position:relative;">{{ mesg.user }}</p>
+									<span class="messageText">{{ mesg.message }}</span>
+									<p class="date">{{ mesg.date }} </p>
+							</div>
+					</div>
+				</div>
+			</div>
+			<div class="submitArea">
+								<form class="form">
+									<div class="col-xs-12" style="padding:0%;">
+										<input type="text" class="form-control" id="message" placeholder="Input Message Here: Press Enter When Done"data-ng-model="newMessage.message" ng-enter="addMessage()">
+									</div>
+								</form>
+						</div>
+		</div>
+	</div>
+			
+</div>

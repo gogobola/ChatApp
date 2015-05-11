@@ -1,3 +1,69 @@
+body{
+		background-color: #f1f1f1;
+
+
+}
+
+.roomList.ng-enter,
+.roomList.ng-leave {
+  -webkit-transition:0.5s linear all;
+  transition:0.5s linear all;
+}
+
+.roomList.ng-enter,
+.roomList.ng-leave.ng-leave-active {
+  opacity:0;
+}
+.roomList.ng-leave,
+.roomList.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+.message.ng-enter,
+.message.ng-leave {
+  -webkit-transition:0.5s linear all;
+  transition:0.5s linear all;
+}
+
+.message.ng-enter,
+.message.ng-leave.ng-leave-active {
+  opacity:0;
+}
+.message.ng-leave,
+.message.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+.alert {
+	display: none;
+	width: 83%;
+	float: right;
+}
+/*.animate-enter, 
+.animate-leave
+{ 
+    -webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -moz-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -ms-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -o-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    position: relative;
+    display: block;
+} 
+
+.animate-enter.animate-enter-active, 
+.animate-leave {
+    opacity: 1;
+    top: 0;
+    height: 30px;
+}
+
+.animate-leave.animate-leave-active,
+.animate-enter {
+    opacity: 0;
+    top: -50px;
+    height: 0px;
+}*/
 .room {
 	width: 100%;
 
@@ -15,12 +81,16 @@
 .roomTitle {
 	text-align: center;
 }
+.roomForm {
+	margin-bottom: 5%;
+}
 .date {
 	float: right;
 	min-width: 20%;
 	padding-left: 10%;
 }
 .message {
+	background-color: white;
 	padding-top: .3%;
 	padding-bottom: .3%;
 	width: 100%;
@@ -45,10 +115,10 @@
 }
 
 .sideDiv {
-	background-color: #f1f1f1;
-  	border: 1px solid #666;
+  	border-right: 1px solid #666;
+  	border-left: 1px solid #666;
   	border-color: #e5e5e5;
-  	height: 100vh;
+  	height: auto;
   	overflow: scroll;
   	padding-left: 0%;
   	padding-right: 0%;
@@ -70,16 +140,14 @@
   	height: 100vh;
 }
 .chatArea {
-	height: 79vh;
+	background-color: white;
+	min-height: 80vh;
+	max-height: 80vh;
 	overflow: scroll;
 }
 .submitArea {
-	height: 6vh;
-	background-color: #f1f1f1;
-  	border: 1px solid #666;
-  	border-color: #e5e5e5;
-  	overflow: scroll;
-  	text-align: center;
+  bottom: 0;
+  width: 100%;
 
 }
 .forms {

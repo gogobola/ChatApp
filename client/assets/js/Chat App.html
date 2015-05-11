@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- saved from url=(0027)http://localhost:3000/test2 -->
+<html lang="en" ng-app="application" class="ng-scope"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+     <link rel="stylesheet" href="http://localhost:3000/assets/css/bootstrap.min.css">
+     <link rel="stylesheet" href="http://localhost:3000/assets/css/app.css">
+    
+    <script src="./Chat App_files/jquery.min.js"></script>
+    <script src="./Chat App_files/bootstrap.min.js"></script>
+    <script src="./Chat App_files/angular.min.js"></script>
+    <script src="./Chat App_files/angular-route.min.js"></script>
+    <script src="./Chat App_files/angular-animate.js"></script>
+     <script src="./Chat App_files/angularfire.min.js"></script>
+      <script src="./Chat App_files/firebase.js"></script>
+       <script src="./Chat App_files/angular-animate.js"></script>
+        <script src="./Chat App_files/app.js"></script>
+        <script src="./Chat App_files/moment.js"></script>
+   
+      
+  </head>
+  <body style="">
+    <div class="navbar navbar-inverse navbar-fixed-top" id="menu" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only"><font><font>Toggle navigation</font></font></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="http://localhost:3000/templates/test2" class="navbar-brand"><font><font>ChatApp</font></font></a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="http://www.sympathiediagnose.de/anmeldung" class="register"><font><font>Application</font></font></a></li>
+        <li><a href="http://www.sympathiediagnose.de/kontakt"><font><font>Contact</font></font></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+      <!-- ngView:  --><div data-ng-view="" class="ng-scope"><div class="container-fluid ng-scope">
+	<div class="row">
+		<div class="col-xs-2 sideDiv">
+				<h3 class="roomTitle">Rooms</h3>
+					<!-- ngRepeat: room in rooms --><p class="roomList ng-scope ng-binding" data-ng-repeat="room in rooms" ng-click="selectRoom(room)">{}</p><!-- end ngRepeat: room in rooms --><p class="roomList ng-scope ng-binding" data-ng-repeat="room in rooms" ng-click="selectRoom(room)">{}</p><!-- end ngRepeat: room in rooms -->
+				
+
+			<div id="forms" class="forms">
+				<!-- ngInclude: roomTemp -->
+				<button id="newButton" class="btn btn-default" ng-click="newRoom()" ng-show="showNewRoomButton">
+				<span class="glyphicon glyphicon-plus "></span>New Room</button>
+			</div>
+
+		</div>
+		<div class="col-xs-10 mainDiv">
+			<div class="row">
+				<div class="col-xs-12" style="padding-right:0%;">
+					<div class="roomHeader">
+						<h1 class="ng-binding"></h1>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12" style="padding-right:0%;">
+					<div class="chatArea">
+						<!-- ngRepeat: mesg in messages -->
+					</div>
+					<div class="submitArea">
+						<form class="form-inline ng-pristine ng-valid">
+							<div class="form-group">
+								<label for="User" class="col-xs-2 cotrol-label">Name</label>
+								<div class="col-xs-4">
+									<input type="text" class="form-control ng-pristine ng-valid" data-ng-model="newMessage.user" id="user">
+								</div>
+								<label for="message" class="col-xs-2 cotrol-label">Message</label>
+								<div class="col-xs-4">
+									<input type="text" class="form-control ng-pristine ng-valid" id="message" data-ng-model="newMessage.message" ng-enter="addMessage()">
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div></div>
+  
+
+</body></html>
