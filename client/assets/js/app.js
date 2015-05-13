@@ -162,12 +162,21 @@ application.controller("testController",["$scope", "chatFactory", function($scop
   }
 
   $scope.createAccount = function(){
-  	if ($scope.newUser.password != $scope.newUser.confirmPass) {
-  		$("#passwordWarning").slideDown(900).delay(1000).slideUp(900);
+  	if (($scope.newUser.password) && ($scope.newUser.confirmPass) && ($scope.newUser.userName)) {
+  		if ($scope.newUser.password != $scope.newUser.confirmPass) {
+  			$("#passwordWarning").slideDown(900).delay(1000).slideUp(900);
+  		}
+	  	else {
+		  	chatFactory.registerAccount($scope.newUser.userName,$scope.newUser.password);
+		  	$scope.newUser.userName = "";
+		  	$scope.newUser.password = "";
+	  	}
+
   	}
   	else {
-  	chatFactory.registerAccount($scope.newUser.userName,$scope.newUser.password);
+  		$("#passwordWarning").slideDown(900).delay(1000).slideUp(900);
   	}
+  	
   }
 
   $scope.loadLoginPage = function() {
@@ -177,8 +186,15 @@ application.controller("testController",["$scope", "chatFactory", function($scop
   }
 
   $scope.login = function() {
-  	chatFactory.login($scope.user.user,$scope.user.password);
-
+	  if (($scope.user.user) && ($scope.user.password)) {
+	  	 chatFactory.login($scope.user.user,$scope.user.password);
+	  	 $scope.user.user = "";
+	  	 $scope.user.password = "";
+	  }
+	  else {
+	  	 $("#loginFailed").html("Please ensure no input fields are empty");
+	  	 $("#loginFailed").slideDown(900).delay(2500).slideUp(900);
+	  }
   }
   $scope.logout = function() {
   	ref.unauth();
